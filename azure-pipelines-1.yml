@@ -1,0 +1,30 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- main
+
+pool:
+  name: 'default'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+# CI: Build the application
+- task: DotNetCoreCLI@2
+  displayName: 'Build and Package'
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+
+# CD: Deploy to Azure Web App
+- task: AzureWebApp@1
+  displayName: 'Deploy to Flipso Web App'
+  inputs:
+    azureSubscription: 'Azure subscription 1'
+    appName: 'flipsoapp'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
