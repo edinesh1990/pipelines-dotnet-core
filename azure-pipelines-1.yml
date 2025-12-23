@@ -25,6 +25,6 @@ steps:
 - task: AzureWebApp@1
   displayName: 'Deploy to Flipso Web App'
   inputs:
-    azureSubscription: 'Azure subscription 1'
+    azureSubscription: 'FlipsoServiceConnection'
     appName: 'flipsoapp'
     package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
